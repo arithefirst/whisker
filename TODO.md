@@ -23,7 +23,7 @@
 - [ ] `/remindme <time> <message>` (DMs user after specified time)
 
 ### 🔍 Utilities
-- [ ] Urban Dictionary lookup
+- [X] Urban Dictionary lookup
 - [ ] LaTeX rendering
 - [ ] Typst rendering (use Typst CLI with `-`)
 - [ ] Wolfram Alpha query

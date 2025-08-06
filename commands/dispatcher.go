@@ -2,6 +2,7 @@ package commands
 
 import (
 	"github.com/arithefirst/whisker/commands/fun"
+	"github.com/arithefirst/whisker/commands/utility"
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -15,5 +16,7 @@ func handleInteraction(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	switch i.ApplicationCommandData().Name {
 	case "ping":
 		fun.Ping(s, i)
+	case "urban":
+		utility.Urbandictionary(s, i)
 	}
 }
