@@ -26,7 +26,7 @@ Whisker is a versatile Discord bot designed to enhance your server experience wi
 
 #### General Utilities
 - [ ] **Remind Me** - Set personal reminders
-- [ ] **Urban Dictionary** - Look up definitions
+- [X] **Urban Dictionary** - Look up definitions
 - [ ] **LaTeX** - Render LaTeX expressions
 - [ ] **Typst** - Render Typst documents
 - [ ] **Wolfram Alpha** - Query Wolfram Alpha
