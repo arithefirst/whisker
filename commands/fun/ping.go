@@ -16,7 +16,6 @@ var DefinePing = &discordgo.ApplicationCommand{
 }
 
 func Ping(s *discordgo.Session, i *discordgo.InteractionCreate) {
-
 	ephemeral := false
 
 	options := i.ApplicationCommandData().Options
