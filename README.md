@@ -14,10 +14,10 @@ Whisker is a versatile Discord bot designed to enhance your server experience wi
 - [ ] **Rank** - Check your XP rank
 
 #### Moderation
-- [ ] **Kick** - Kick users from server
+- [x] **Kick** - Kick users from server
 - [x] **Ban** - Ban users from server
 - [ ] **Mute** - Mute users in channels
-- [ ] **Warn** - Warn users
+- [x] **Warn** - Warn users
 - [ ] **Warn Log** - View user warnings
 - [ ] **Snipe** - Show last deleted message
 - [ ] **Edit Snipe** - Show last edited message

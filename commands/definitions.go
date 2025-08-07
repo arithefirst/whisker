@@ -28,4 +28,8 @@ var commandRegistry = []Command{
 		Definition: moderation.DefineBan,
 		Handler:    moderation.Ban,
 	},
+	{
+		Definition: moderation.DefineWarn,
+		Handler:    moderation.Warn,
+	},
 }
