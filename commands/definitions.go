@@ -36,4 +36,11 @@ var commandRegistry = []Command{
 		Definition: moderation.DefineClear,
 		Handler:    moderation.Clear,
 	},
+	{
+		Definition: moderation.DefineMute,
+		Handler:    moderation.Mute,
+	}, {
+		Definition: moderation.DefineUnmute,
+		Handler:    moderation.Unmute,
+	},
 }
