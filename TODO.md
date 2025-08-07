@@ -44,7 +44,7 @@
 - [ ] Divorce
 
 ### 🎭 Profile & Randomness
-- [ ] Avatar command
+- [x] Avatar command
 - [ ] Banner command (support non-Nitro users with hex fallback)
 - [ ] 8Ball
 - [ ] Trivia (with XP reward)

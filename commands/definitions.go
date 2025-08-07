@@ -7,4 +7,4 @@ import (
 )
 
 // Add to this list every time you create a new command
-var commandDefinitions = []*discordgo.ApplicationCommand{fun.DefinePing, utility.DefineUrban}
+var commandDefinitions = []*discordgo.ApplicationCommand{fun.DefinePing, utility.DefineUrban, utility.DefineAvatar}

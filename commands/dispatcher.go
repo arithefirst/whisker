@@ -18,5 +18,7 @@ func handleInteraction(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		fun.Ping(s, i)
 	case "urban":
 		utility.Urbandictionary(s, i)
+	case "avatar":
+		utility.Avatar(s, i)
 	}
 }
