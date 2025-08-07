@@ -59,29 +59,17 @@ func Ban(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	}
 
 	if err != nil {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: helpers.ErrorEmbed("banning user", err),
-			},
-		})
-
+		helpers.IntRespondEmbedEph(s, i, helpers.ErrorEmbed("banning user", err))
 		return
 	}
 
-	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-		Type: discordgo.InteractionResponseChannelMessageWithSource,
-		Data: &discordgo.InteractionResponseData{
-			Embeds: []*discordgo.MessageEmbed{
-				helpers.
-					CreateEmbed().
-					SetTitle("User Banned").
-					SetDescription(fmt.Sprintf("%s has been kicked from the server by %s", user.Mention(), i.Member.Mention())).
-					AddField("Reason", reason).
-					SetThumbnail(user.AvatarURL("2048")).
-					SetColor(colors.Primary).MessageEmbed,
-			},
-		},
+	helpers.IntRespondEmbed(s, i, []*discordgo.MessageEmbed{
+		helpers.
+			CreateEmbed().
+			SetTitle("User Banned").
+			SetDescription(fmt.Sprintf("%s has been kicked from the server by %s", user.Mention(), i.Member.Mention())).
+			AddField("Reason", reason).
+			SetThumbnail(user.AvatarURL("2048")).
+			SetColor(colors.Primary).MessageEmbed,
 	})
 }

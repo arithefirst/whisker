@@ -48,13 +48,7 @@ func Warn(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 	channel, err := s.UserChannelCreate(user.ID)
 	if err != nil {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: helpers.ErrorEmbed("creating DM channel", err),
-			},
-		})
+		helpers.IntRespondEmbedEph(s,i,helpers.ErrorEmbed("creating DM channel", err))
 		return
 	}
 
@@ -62,42 +56,23 @@ func Warn(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 	guild, err := s.State.Guild(i.GuildID)
 	if err != nil {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: helpers.ErrorEmbed("fetching guild", err),
-			},
-		})
-
+		helpers.IntRespondEmbedEph(s, i, helpers.ErrorEmbed("fetching guild", err))
 		return
 	}
 
 	_, err = s.ChannelMessageSend(channel.ID, fmt.Sprintf("You have been warned in %s for: `%s`", guild.Name, reason))
 	if err != nil {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: helpers.ErrorEmbed("sending DM", err),
-			},
-		})
-
+		helpers.IntRespondEmbedEph(s, i, helpers.ErrorEmbed("sending DM", err))
 		return
 	}
 
-	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-		Type: discordgo.InteractionResponseChannelMessageWithSource,
-		Data: &discordgo.InteractionResponseData{
-			Embeds: []*discordgo.MessageEmbed{
-				helpers.
-					CreateEmbed().
-					SetTitle("User Warned").
-					SetDescription(fmt.Sprintf("%s has been warned by %s", user.Mention(), i.Member.Mention())).
-					AddField("Reason", fmt.Sprintf("`%s`", reason)).
-					SetThumbnail(user.AvatarURL("2048")).
-					SetColor(colors.Primary).MessageEmbed,
-			},
-		},
+	helpers.IntRespondEmbed(s, i, []*discordgo.MessageEmbed{
+		helpers.
+			CreateEmbed().
+			SetTitle("User Warned").
+			SetDescription(fmt.Sprintf("%s has been warned by %s", user.Mention(), i.Member.Mention())).
+			AddField("Reason", fmt.Sprintf("`%s`", reason)).
+			SetThumbnail(user.AvatarURL("2048")).
+			SetColor(colors.Primary).MessageEmbed,
 	})
 }

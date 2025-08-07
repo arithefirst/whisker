@@ -34,24 +34,12 @@ func Clear(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 	messages, err := s.ChannelMessages(i.ChannelID, count, "", "", "")
 	if err != nil {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: helpers.ErrorEmbed("fetching messages", err),
-			},
-		})
+		helpers.IntRespondEmbedEph(s,i, helpers.ErrorEmbed("fetching messages", err))
 		return
 	}
 
 	if len(messages) == 0 {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: helpers.ErrorEmbed("clearing messages", fmt.Errorf("no messages found to clear")),
-			},
-		})
+		helpers.IntRespondEmbedEph(s, i, helpers.ErrorEmbed("clearing messages", fmt.Errorf("no messages found to clear")))
 		return
 	}
 
@@ -62,27 +50,16 @@ func Clear(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 	err = s.ChannelMessagesBulkDelete(i.ChannelID, messageIDs)
 	if err != nil {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: helpers.ErrorEmbed("deleting messages", err),
-			},
-		})
+		helpers.IntRespondEmbedEph(s, i, helpers.ErrorEmbed("deleting messages", err))
 		return
 	}
 
-	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-		Type: discordgo.InteractionResponseChannelMessageWithSource,
-		Data: &discordgo.InteractionResponseData{
-			Embeds: []*discordgo.MessageEmbed{
-				helpers.
-					CreateEmbed().
-					SetTitle("Messages Cleared").
-					SetDescription(fmt.Sprintf("Successfully deleted %d messages.", count)).
-					SetColor(colors.Primary).MessageEmbed,
-			},
-		},
+	helpers.IntRespondEmbed(s, i, []*discordgo.MessageEmbed{
+		helpers.
+			CreateEmbed().
+			SetTitle("Messages Cleared").
+			SetDescription(fmt.Sprintf("Successfully deleted %d messages.", count)).
+			SetColor(colors.Primary).MessageEmbed,
 	})
 
 	// delete the reply after 3 secs
