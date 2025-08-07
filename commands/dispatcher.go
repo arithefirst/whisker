@@ -1,24 +1,28 @@
 package commands
 
 import (
-	"github.com/arithefirst/whisker/commands/fun"
-	"github.com/arithefirst/whisker/commands/utility"
 	"github.com/bwmarrin/discordgo"
 )
+
+var (
+	commandDefinitions []*discordgo.ApplicationCommand
+	commandHandlers    = make(map[string]func(*discordgo.Session, *discordgo.InteractionCreate))
+)
+
+func init() {
+	for _, cmd := range commandRegistry {
+		commandDefinitions = append(commandDefinitions, cmd.Definition)
+		commandHandlers[cmd.Definition.Name] = cmd.Handler
+	}
+}
 
 func GetCommandSetupComponents() (func(*discordgo.Session, *discordgo.InteractionCreate), []*discordgo.ApplicationCommand, error) {
 	return handleInteraction, commandDefinitions, nil
 }
 
-// handleInteractions routes an interaction to its handler
+// handleInteractions dispatches the appropriate command handlers based on the incoming interaction
 func handleInteraction(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	// Add to this switch case every time you define a new command
-	switch i.ApplicationCommandData().Name {
-	case "ping":
-		fun.Ping(s, i)
-	case "urban":
-		utility.Urbandictionary(s, i)
-	case "avatar":
-		utility.Avatar(s, i)
+	if handler, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
+		handler(s, i)
 	}
 }
