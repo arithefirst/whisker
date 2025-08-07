@@ -13,6 +13,10 @@ var commandRegistry = []Command{
 		Handler:    fun.Ping,
 	},
 	{
+		Definition: fun.DefineCat,
+		Handler:    fun.Cat,
+	},
+	{
 		Definition: utility.DefineUrban,
 		Handler:    utility.Urbandictionary,
 	},

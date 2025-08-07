@@ -59,14 +59,7 @@ func Urbandictionary(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 	resp, err := http.Get(fmt.Sprintf("https://api.urbandictionary.com/v0/define?term=%s", url.QueryEscape(searchTerm)))
 	if err != nil {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: helpers.ErrorEmbed("querying Urban Dictionary", err),
-			},
-		})
-
+		helpers.IntRespondEmbedEph(s, i, helpers.ErrorEmbed("querying Urban Dictionary", err))
 		return
 	}
 
@@ -78,61 +71,38 @@ func Urbandictionary(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	var data UrbanDictionaryResponse
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: helpers.ErrorEmbed("parsing JSON response", err),
-			},
-		})
-
+		helpers.IntRespondEmbedEph(s, i, helpers.ErrorEmbed("parsing JSON response", err))
 		return
 	}
 
 	if len(data.List) == 0 {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Embeds: []*discordgo.MessageEmbed{
-					helpers.
-						CreateEmbed().
-						SetTitle("No results found").
-						SetDescription(fmt.Sprintf("No definitions found for \"%s\"", searchTerm)).
-						SetThumbnail("https://www.urbandictionary.com/apple-touch-icon.png").
-						SetColor(colors.Error).MessageEmbed,
-				},
-			},
+		helpers.IntRespondEmbed(s, i, []*discordgo.MessageEmbed{
+			helpers.
+				CreateEmbed().
+				SetTitle("No results found").
+				SetDescription(fmt.Sprintf("No definitions found for \"%s\"", searchTerm)).
+				SetThumbnail("https://www.urbandictionary.com/apple-touch-icon.png").
+				SetColor(colors.Error).MessageEmbed,
 		})
+
 		return
 	}
 
 	formattedDate, err := helpers.RFC3339toDateString(data.List[0].WrittenOn)
 	if err != nil {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: helpers.ErrorEmbed("converting RFC339 String to date object", err),
-			},
-		})
-
+		helpers.IntRespondEmbedEph(s, i, helpers.ErrorEmbed("converting RFC339 String to date object", err))
 		return
 	}
 
-	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-		Type: discordgo.InteractionResponseChannelMessageWithSource,
-		Data: &discordgo.InteractionResponseData{
-			Embeds: []*discordgo.MessageEmbed{
-				helpers.
-					CreateEmbed().
-					SetTitle(fmt.Sprintf("Definition of \"%s\"", data.List[0].Word)).
-					AddField("Definition", injectSearchLinks(data.List[0].Definition)).
-					AddField("Example", injectSearchLinks(data.List[0].Example)).
-					SetURL(data.List[0].Permalink).
-					SetThumbnail("https://www.urbandictionary.com/apple-touch-icon.png").
-					SetAuthor(fmt.Sprintf("By %s • %s", data.List[0].Author, formattedDate)).
-					SetColor(colors.Primary).MessageEmbed,
-			},
-		},
+	helpers.IntRespondEmbed(s, i, []*discordgo.MessageEmbed{
+		helpers.
+			CreateEmbed().
+			SetTitle(fmt.Sprintf("Definition of \"%s\"", data.List[0].Word)).
+			AddField("Definition", injectSearchLinks(data.List[0].Definition)).
+			AddField("Example", injectSearchLinks(data.List[0].Example)).
+			SetURL(data.List[0].Permalink).
+			SetThumbnail("https://www.urbandictionary.com/apple-touch-icon.png").
+			SetAuthor(fmt.Sprintf("By %s • %s", data.List[0].Author, formattedDate)).
+			SetColor(colors.Primary).MessageEmbed,
 	})
 }
