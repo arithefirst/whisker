@@ -2,6 +2,7 @@ package commands
 
 import (
 	"github.com/arithefirst/whisker/commands/fun"
+	"github.com/arithefirst/whisker/commands/moderation"
 	"github.com/arithefirst/whisker/commands/utility"
 )
 
@@ -18,5 +19,13 @@ var commandRegistry = []Command{
 	{
 		Definition: utility.DefineAvatar,
 		Handler:    utility.Avatar,
+	},
+	{
+		Definition: moderation.DefineKick,
+		Handler:    moderation.Kick,
+	},
+	{
+		Definition: moderation.DefineBan,
+		Handler:    moderation.Ban,
 	},
 }

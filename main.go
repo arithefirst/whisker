@@ -30,6 +30,8 @@ func main() {
 		log.Fatalf("Invalid bot token: %v", err)
 	}
 
+	client.Identify.Intents |= discordgo.IntentsGuilds | discordgo.IntentsGuildMembers
+
 	commandHandler, commandDefs, err := commands.GetCommandSetupComponents()
 	if err != nil {
 		log.Fatalf("Error barreling commands: %v", err)

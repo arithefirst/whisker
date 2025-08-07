@@ -38,18 +38,6 @@ var DefineUrban = &discordgo.ApplicationCommand{
 	},
 }
 
-func errorEmbed(errorContext string, err error) []*discordgo.MessageEmbed {
-
-	return []*discordgo.MessageEmbed{
-		helpers.
-			CreateEmbed().
-			SetTitle("Unexpected error!").
-			SetDescription(fmt.Sprintf("An unexpected error occured when %s. See details below.", errorContext)).
-			AddField("Full Error Details", fmt.Sprintf("```text\n%v\n```", err)).
-			SetColor(colors.Error).MessageEmbed,
-	}
-}
-
 func injectSearchLinks(input string) string {
 	query := regexp.MustCompile(`\[(.*?)\]`)
 	return query.ReplaceAllStringFunc(input, func(match string) string {
@@ -75,7 +63,7 @@ func Urbandictionary(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionResponseData{
 				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: errorEmbed("querying Urban Dictionary", err),
+				Embeds: helpers.ErrorEmbed("querying Urban Dictionary", err),
 			},
 		})
 
@@ -94,7 +82,7 @@ func Urbandictionary(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionResponseData{
 				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: errorEmbed("parsing JSON response", err),
+				Embeds: helpers.ErrorEmbed("parsing JSON response", err),
 			},
 		})
 
@@ -124,7 +112,7 @@ func Urbandictionary(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionResponseData{
 				Flags:  discordgo.MessageFlagsEphemeral,
-				Embeds: errorEmbed("converting RFC339 String to date object", err),
+				Embeds: helpers.ErrorEmbed("converting RFC339 String to date object", err),
 			},
 		})
 

@@ -15,7 +15,7 @@ Whisker is a versatile Discord bot designed to enhance your server experience wi
 
 #### Moderation
 - [ ] **Kick** - Kick users from server
-- [ ] **Ban** - Ban users from server
+- [x] **Ban** - Ban users from server
 - [ ] **Mute** - Mute users in channels
 - [ ] **Warn** - Warn users
 - [ ] **Warn Log** - View user warnings
@@ -32,7 +32,7 @@ Whisker is a versatile Discord bot designed to enhance your server experience wi
 - [ ] **Wolfram Alpha** - Query Wolfram Alpha
 - [ ] **Calculator** - Mathematical calculations
 - [ ] **Time Zone** - Display time zones
-- [ ] **Avatar** - Get user avatars
+- [x] **Avatar** - Get user avatars
 - [ ] **Banner** - Get user banners
 - [ ] **Image Processing** - Rotate, crop, zoom, flip images
 - [ ] **Meme Generator** - Create memes with captions and templates
