@@ -32,4 +32,8 @@ var commandRegistry = []Command{
 		Definition: moderation.DefineWarn,
 		Handler:    moderation.Warn,
 	},
+	{
+		Definition: moderation.DefineClear,
+		Handler:    moderation.Clear,
+	},
 }
