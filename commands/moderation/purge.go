@@ -44,7 +44,10 @@ func Purge(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	}
 
 	messageIDs := make([]string, len(messages))
+	msgDeletedPerUser := make(map[string]int)
+
 	for idx, msg := range messages {
+		msgDeletedPerUser[msg.Author.Mention()]++
 		messageIDs[idx] = msg.ID
 	}
 
@@ -54,11 +57,16 @@ func Purge(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		return
 	}
 
+	descriptionText := fmt.Sprintf("Successfully deleted %d messages.", count)
+	for user, count := range msgDeletedPerUser {
+		descriptionText += fmt.Sprintf("\n%s %d", user, count)
+	}
+
 	helpers.IntRespondEmbed(s, i, []*discordgo.MessageEmbed{
 		helpers.
 			CreateEmbed().
+			SetDescription(descriptionText).
 			SetTitle("Messages Purged").
-			SetDescription(fmt.Sprintf("Successfully deleted %d messages.", count)).
 			SetColor(colors.Primary).MessageEmbed,
 	})
 
