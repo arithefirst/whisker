@@ -56,7 +56,7 @@ func Cat(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	helpers.IntRespondEmbed(s, i, []*discordgo.MessageEmbed{
 		helpers.
 			CreateEmbed().
-			SetTitle("meow").
+			SetTitle("Check out this cat!").
 			SetImage(data[0].URL).
 			SetColor(colors.Primary).MessageEmbed,
 	})

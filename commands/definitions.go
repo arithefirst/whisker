@@ -8,6 +8,7 @@ import (
 
 // Add to this list every time you create a new command
 var commandRegistry = []Command{
+	// Fun
 	{
 		Definition: fun.DefinePing,
 		Handler:    fun.Ping,
@@ -17,6 +18,15 @@ var commandRegistry = []Command{
 		Handler:    fun.Cat,
 	},
 	{
+		Definition: fun.DefineFox,
+		Handler:    fun.Fox,
+	},
+	{
+		Definition: fun.DefineDog,
+		Handler:    fun.Dog,
+	},
+	// Utility
+	{
 		Definition: utility.DefineUrban,
 		Handler:    utility.Urbandictionary,
 	},
@@ -24,6 +34,7 @@ var commandRegistry = []Command{
 		Definition: utility.DefineAvatar,
 		Handler:    utility.Avatar,
 	},
+	// Moderation
 	{
 		Definition: moderation.DefineKick,
 		Handler:    moderation.Kick,
