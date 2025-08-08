@@ -46,7 +46,6 @@ func Banner(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	if len(user.BannerURL("256")) > 1 {
 		bannerURL = user.BannerURL("256")
 	} else if userResponse.AccentColor != nil {
-		fmt.Printf("%v, %X\n", *userResponse.AccentColor, *userResponse.AccentColor)
 		bannerURL = fmt.Sprintf("https://singlecolorimage.com/get/%06X/600x240", *userResponse.AccentColor)
 	} else {
 		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
