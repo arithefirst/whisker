@@ -34,6 +34,10 @@ var commandRegistry = []Command{
 		Definition: utility.DefineAvatar,
 		Handler:    utility.Avatar,
 	},
+	{
+		Definition: utility.DefineBanner,
+		Handler:    utility.Banner,
+	},
 	// Moderation
 	{
 		Definition: moderation.DefineKick,

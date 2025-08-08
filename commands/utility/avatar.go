@@ -43,7 +43,7 @@ func Avatar(s *discordgo.Session, i *discordgo.InteractionCreate) {
 				helpers.
 					CreateEmbed().
 					SetTitle(fmt.Sprintf("%s's Avatar", user.Username)).
-					SetImage(user.AvatarURL("2048")).
+					SetImage(user.AvatarURL("256")).
 					SetColor(colors.Primary).MessageEmbed,
 			},
 		},
