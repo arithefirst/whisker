@@ -8,6 +8,7 @@ import (
 	"os/signal"
 
 	"github.com/arithefirst/whisker/commands"
+	"github.com/arithefirst/whisker/events"
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -30,13 +31,17 @@ func main() {
 		log.Fatalf("Invalid bot token: %v", err)
 	}
 
-	client.Identify.Intents |= discordgo.IntentsGuilds | discordgo.IntentsGuildMembers
+	client.Identify.Intents |= discordgo.IntentsGuilds |
+		discordgo.IntentsGuildMembers |
+		discordgo.IntentsGuildMessages |
+		discordgo.IntentMessageContent
 
 	commandHandler, commandDefs, err := commands.GetCommandSetupComponents()
 	if err != nil {
 		log.Fatalf("Error barreling commands: %v", err)
 	}
 
+	events.RegisterEvents(client)
 	// Register the interaction handler
 	client.AddHandler(commandHandler)
 
