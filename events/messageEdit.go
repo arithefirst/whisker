@@ -9,7 +9,7 @@ import (
 )
 
 func messageEdit(s *discordgo.Session, m *discordgo.MessageUpdate) {
-	if m.ID == s.State.User.ID {
+	if m.Author.Bot {
 		return
 	}
 
