@@ -8,8 +8,8 @@ import (
 )
 
 var preamble string = `
-#set page(fill: black, height: auto, width: auto, margin: 5pt)
-#set text(fill: white)
+#set page(fill: black, height: auto, width: auto, margin: 10pt)
+#set text(fill: white, size: 18pt)
 #show math.equation: eq => [
   #text(fill: white, [ #eq ])
 ]
@@ -22,8 +22,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if strings.HasPrefix(m.Content, "meow!ty") {
-		strings.Replace(m.Content, "meow!ty", "", 1)
-		code := strings.TrimSpace(m.Content)
+		code := preamble + strings.TrimSpace(m.Content[8:])
 		file, err := helpers.RenderTypst(code)
 
 		if err != nil {
