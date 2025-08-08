@@ -33,7 +33,7 @@ Whisker is a versatile Discord bot designed to enhance your server experience wi
 - [ ] **Calculator** - Mathematical calculations
 - [ ] **Time Zone** - Display time zones
 - [x] **Avatar** - Get user avatars
-- [ ] **Banner** - Get user banners
+- [X] **Banner** - Get user banners
 - [ ] **Image Processing** - Rotate, crop, zoom, flip images
 - [ ] **Meme Generator** - Create memes with captions and templates
 
@@ -63,9 +63,9 @@ Whisker is a versatile Discord bot designed to enhance your server experience wi
 - [ ] **Mad Libs** - Generate Mad Libs stories
 
 #### Animal Images
-- [ ] **Fox** - Random fox images
-- [ ] **Cat** - Random cat images
-- [ ] **Dog** - Random dog images
+- [X] **Fox** - Random fox images
+- [X] **Cat** - Random cat images
+- [X] **Dog** - Random dog images
 
 ## Contributing
 
@@ -101,4 +101,4 @@ For the following, this assumes the name of your command is `examplecommand`
   ```
   
 
-- Every time a command is added, you must add it's definition to [definitions.go](/commands/definitions.go), and you must add it's name and impl to the switch in [dispatcher.go](/commands/dispatcher.go) (The case in the switch should be the same as the name in the command definition)
+- Every time a command is added, you must add it's definition and impl to [definitions.go](/commands/definitions.go).
