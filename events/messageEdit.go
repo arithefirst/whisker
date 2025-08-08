@@ -15,8 +15,16 @@ func messageEdit(s *discordgo.Session, m *discordgo.MessageUpdate) {
 
 	if strings.HasPrefix(m.Content, "meow!ty") {
 		mutex.Lock()
-		data, found := previousInvocations[m.ChannelID]
+		invocation, found := previousInvocations[m.ID]
 		mutex.Unlock()
+
+		// update timestamp
+		invocation.Timestamp = time.Now()
+
+		s.ChannelMessageDelete(invocation.ChannelID, invocation.ReplyMsgID)
+		if invocation.ErrorMsgID != "" {
+			s.ChannelMessageDelete(invocation.ChannelID, invocation.ErrorMsgID)
+		}
 
 		if !found {
 			return
@@ -26,18 +34,18 @@ func messageEdit(s *discordgo.Session, m *discordgo.MessageUpdate) {
 		file, err := helpers.RenderTypst(code)
 
 		if err != nil {
-			s.ChannelMessageSendEmbed(m.ChannelID, helpers.ErrorEmbed("rendering Typst", err)[0])
-			return
-		}
+			errorMsg, _ := s.ChannelMessageSendEmbed(m.ChannelID, helpers.ErrorEmbed("rendering Typst", err)[0])
 
-		err = s.ChannelMessageDelete(data.ChannelID, data.ReplyMsgID)
-		if err != nil {
-			s.ChannelMessageSendEmbed(m.ChannelID, helpers.ErrorEmbed("deleting previous message", err)[0])
+			mutex.Lock()
+			defer mutex.Unlock()
+
+			invocation.ErrorMsgID = errorMsg.ID
+			previousInvocations[m.ID] = invocation
+
 			return
 		}
 
 		msg, err := s.ChannelFileSend(m.ChannelID, file.Name, file.Reader)
-
 		if err != nil {
 			s.ChannelMessageSendEmbed(m.ChannelID, helpers.ErrorEmbed("sending attachment", err)[0])
 			return
@@ -46,11 +54,7 @@ func messageEdit(s *discordgo.Session, m *discordgo.MessageUpdate) {
 		mutex.Lock()
 		defer mutex.Unlock()
 
-		// update timestamp and message id
-		previousInvocations[m.ChannelID] = InvocationData{
-			Timestamp: time.Now(),
-			ReplyMsgID: msg.ID,
-			ChannelID: msg.ChannelID,
-		}
+		invocation.ReplyMsgID = msg.ID
+		previousInvocations[m.ID] = invocation
 	}
 }
