@@ -1,14 +1,17 @@
 package events
 
 import (
+	"log"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/arithefirst/whisker/helpers"
 	"github.com/bwmarrin/discordgo"
 )
 
 type InvocationData struct {
+	Timestamp  time.Time
 	ReplyMsgID string
 	ChannelID  string
 }
@@ -49,8 +52,28 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		defer mutex.Unlock()
 
 		previousInvocations[m.ChannelID] = InvocationData{
+			Timestamp:  time.Now(),
 			ReplyMsgID: msg.ID,
 			ChannelID:  msg.ChannelID,
 		}
 	}
+}
+
+// clean up invocations after 5 minutes
+func init() {
+	ticker := time.NewTicker(1 * time.Minute)
+
+	go func() {
+		for range ticker.C {
+			mutex.Lock()
+			for channelID, data := range previousInvocations {
+				if time.Since(data.Timestamp) > 5*time.Minute {
+					delete(previousInvocations, channelID)
+					log.Printf("cleaned up expired invocation for channel: %s", channelID)
+				}
+			}
+
+			mutex.Unlock()
+		}
+	}()
 }

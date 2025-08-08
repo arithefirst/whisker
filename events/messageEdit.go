@@ -2,6 +2,7 @@ package events
 
 import (
 	"strings"
+	"time"
 
 	"github.com/arithefirst/whisker/helpers"
 	"github.com/bwmarrin/discordgo"
@@ -47,8 +48,9 @@ func messageEdit(s *discordgo.Session, m *discordgo.MessageUpdate) {
 
 		// update timestamp and message id
 		previousInvocations[m.ChannelID] = InvocationData{
+			Timestamp: time.Now(),
 			ReplyMsgID: msg.ID,
-			ChannelID:  msg.ChannelID,
+			ChannelID: msg.ChannelID,
 		}
 	}
 }
