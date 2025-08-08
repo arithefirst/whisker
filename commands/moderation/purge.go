@@ -21,6 +21,12 @@ var DefinePurge = &discordgo.ApplicationCommand{
 			MinValue:    &[]float64{1}[0], // wth?
 			MaxValue:    100,
 		},
+		{
+			Name:        "autodelete",
+			Description: "Wether to delete the bot response automatically (Default: True)",
+			Type:        discordgo.ApplicationCommandOptionBoolean,
+			Required:    false,
+		},
 	},
 }
 
@@ -31,6 +37,13 @@ func Purge(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 	options := i.ApplicationCommandData().Options
 	count := int(options[0].IntValue())
+	audodelete := true
+	for _, opt := range options {
+		if opt.Name == "autodelete" {
+			audodelete = opt.BoolValue()
+			break
+		}
+	}
 
 	messages, err := s.ChannelMessages(i.ChannelID, count, "", "", "")
 	if err != nil {
@@ -57,23 +70,26 @@ func Purge(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		return
 	}
 
-	descriptionText := fmt.Sprintf("Successfully deleted %d messages.", count)
+	var messageBreakdown string
 	for user, count := range msgDeletedPerUser {
-		descriptionText += fmt.Sprintf("\n%s %d", user, count)
+		messageBreakdown += fmt.Sprintf("\n- %s: %d Deletions", user, count)
 	}
 
 	helpers.IntRespondEmbed(s, i, []*discordgo.MessageEmbed{
 		helpers.
 			CreateEmbed().
-			SetDescription(descriptionText).
+			SetDescription(fmt.Sprintf("Successfully deleted %d messages.", count)).
 			SetTitle("Messages Purged").
+			AddField("Message Breakdown", messageBreakdown).
 			SetColor(colors.Primary).MessageEmbed,
 	})
 
-	// delete the reply after 3 secs
-	go func() {
-		time.Sleep(3 * time.Second)
-		s.InteractionResponseDelete(i.Interaction)
-	}()
+	// delete the reply after 3 secs if autodelete on
+	if audodelete {
+		go func() {
+			time.Sleep(3 * time.Second)
+			s.InteractionResponseDelete(i.Interaction)
+		}()
+	}
 
 }
