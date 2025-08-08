@@ -9,13 +9,13 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-var DefineClear = &discordgo.ApplicationCommand{
-	Name:        "clear",
-	Description: "Clears a specified number of messages from the current channel",
+var DefinePurge = &discordgo.ApplicationCommand{
+	Name:        "purge",
+	Description: "Purges a specified number of messages from the current channel",
 	Options: []*discordgo.ApplicationCommandOption{
 		{
 			Name:        "count",
-			Description: "The number of messages to clear (1-100)",
+			Description: "The number of messages to purge (1-100)",
 			Type:        discordgo.ApplicationCommandOptionInteger,
 			Required:    true,
 			MinValue:    &[]float64{1}[0], // wth?
@@ -24,7 +24,7 @@ var DefineClear = &discordgo.ApplicationCommand{
 	},
 }
 
-func Clear(s *discordgo.Session, i *discordgo.InteractionCreate) {
+func Purge(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	if !hasPermission(s, i, discordgo.PermissionManageMessages, "Manage Messages") {
 		return
 	}
@@ -34,12 +34,12 @@ func Clear(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 	messages, err := s.ChannelMessages(i.ChannelID, count, "", "", "")
 	if err != nil {
-		helpers.IntRespondEmbedEph(s,i, helpers.ErrorEmbed("fetching messages", err))
+		helpers.IntRespondEmbedEph(s, i, helpers.ErrorEmbed("fetching messages", err))
 		return
 	}
 
 	if len(messages) == 0 {
-		helpers.IntRespondEmbedEph(s, i, helpers.ErrorEmbed("clearing messages", fmt.Errorf("no messages found to clear")))
+		helpers.IntRespondEmbedEph(s, i, helpers.ErrorEmbed("purging messages", fmt.Errorf("no messages found to clear")))
 		return
 	}
 
@@ -57,7 +57,7 @@ func Clear(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	helpers.IntRespondEmbed(s, i, []*discordgo.MessageEmbed{
 		helpers.
 			CreateEmbed().
-			SetTitle("Messages Cleared").
+			SetTitle("Messages Purged").
 			SetDescription(fmt.Sprintf("Successfully deleted %d messages.", count)).
 			SetColor(colors.Primary).MessageEmbed,
 	})

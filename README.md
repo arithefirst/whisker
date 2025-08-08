@@ -21,7 +21,7 @@ Whisker is a versatile Discord bot designed to enhance your server experience wi
 - [ ] **Warn Log** - View user warnings
 - [ ] **Snipe** - Show last deleted message
 - [ ] **Edit Snipe** - Show last edited message
-- [x] **Clear** - Mass delete messages
+- [x] **Purge** - Mass delete messages
 - [ ] **Message Logging** - Log message edits and deletions
 
 #### General Utilities
