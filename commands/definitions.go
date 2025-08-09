@@ -55,4 +55,12 @@ var commandRegistry = []Command{
 		Definition: moderation.DefinePurge,
 		Handler:    moderation.Purge,
 	},
+	{
+		Definition: moderation.DefineMute,
+		Handler:    moderation.Mute,
+	},
+	{
+		Definition: moderation.DefineUnmute,
+		Handler:    moderation.Unmute,
+	},
 }
