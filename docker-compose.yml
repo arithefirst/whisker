@@ -1,0 +1,29 @@
+services:
+  bot:
+    build: .
+    restart: always
+    environment:
+      DATABASE_URL: "postgres://botuser:botpassword@db:5432/botdb?sslmode=disable"
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17.5-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: botuser
+      POSTGRES_PASSWORD: botpassword
+      POSTGRES_DB: botdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./initial_setup.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U botuser -d botdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
