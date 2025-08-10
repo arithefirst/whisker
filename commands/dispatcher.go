@@ -2,11 +2,16 @@ package commands
 
 import (
 	"github.com/bwmarrin/discordgo"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
+
+type Handler struct {
+	DB *pgxpool.Pool
+}
 
 var (
 	commandDefinitions []*discordgo.ApplicationCommand
-	commandHandlers    = make(map[string]func(*discordgo.Session, *discordgo.InteractionCreate))
+	commandHandlers    = make(map[string]CommandExecutor)
 )
 
 func init() {
@@ -16,13 +21,13 @@ func init() {
 	}
 }
 
-func GetCommandSetupComponents() (func(*discordgo.Session, *discordgo.InteractionCreate), []*discordgo.ApplicationCommand, error) {
-	return handleInteraction, commandDefinitions, nil
+func (h *Handler) GetCommandSetupComponents() (func(*discordgo.Session, *discordgo.InteractionCreate), []*discordgo.ApplicationCommand, error) {
+	return h.handleInteraction, commandDefinitions, nil
 }
 
 // handleInteractions dispatches the appropriate command handlers based on the incoming interaction
-func handleInteraction(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	if handler, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
-		handler(s, i)
+func (h *Handler) handleInteraction(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	if executor, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
+		executor.Execute(s, i, h.DB)
 	}
 }

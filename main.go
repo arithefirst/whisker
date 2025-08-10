@@ -46,6 +46,10 @@ func main() {
 		DB: dbpool,
 	}
 
+	cmdHandler := &commands.Handler {
+        DB: dbpool,
+	}
+
 	GuildID := "1402745840220635187"
 
 	if *BotToken == "" {
@@ -65,7 +69,7 @@ func main() {
 		discordgo.IntentsGuildMessages |
 		discordgo.IntentMessageContent
 
-	commandHandler, commandDefs, err := commands.GetCommandSetupComponents()
+	commandHandler, commandDefs, err := cmdHandler.GetCommandSetupComponents()
 	if err != nil {
 		log.Fatalf("Error barreling commands: %v", err)
 	}
