@@ -11,56 +11,60 @@ var commandRegistry = []Command{
 	// Fun
 	{
 		Definition: fun.DefinePing,
-		Handler:    SimpleHandlerFn(fun.Ping),
+		Handler:    fun.Ping,
 	},
 	{
 		Definition: fun.DefineCat,
-		Handler:    SimpleHandlerFn(fun.Cat),
+		Handler:    fun.Cat,
 	},
 	{
 		Definition: fun.DefineFox,
-		Handler:    SimpleHandlerFn(fun.Fox),
+		Handler:    fun.Fox,
 	},
 	{
 		Definition: fun.DefineDog,
-		Handler:    SimpleHandlerFn(fun.Dog),
+		Handler:    fun.Dog,
 	},
 	// Utility
 	{
 		Definition: utility.DefineUrban,
-		Handler:    SimpleHandlerFn(utility.Urbandictionary),
+		Handler:    utility.Urbandictionary,
 	},
 	{
 		Definition: utility.DefineAvatar,
-		Handler:    SimpleHandlerFn(utility.Avatar),
+		Handler:    utility.Avatar,
 	},
 	{
 		Definition: utility.DefineBanner,
-		Handler:    SimpleHandlerFn(utility.Banner),
+		Handler:    utility.Banner,
+	},
+	{
+		Definition: utility.DefineXP,
+		Handler:    utility.XP,
 	},
 	// Moderation
 	{
 		Definition: moderation.DefineKick,
-		Handler:    SimpleHandlerFn(moderation.Kick),
+		Handler:    moderation.Kick,
 	},
 	{
 		Definition: moderation.DefineBan,
-		Handler:    SimpleHandlerFn(moderation.Ban),
+		Handler:    moderation.Ban,
 	},
 	{
 		Definition: moderation.DefineWarn,
-		Handler:    SimpleHandlerFn(moderation.Warn),
+		Handler:    moderation.Warn,
 	},
 	{
 		Definition: moderation.DefinePurge,
-		Handler:    SimpleHandlerFn(moderation.Purge),
+		Handler:    moderation.Purge,
 	},
 	{
 		Definition: moderation.DefineMute,
-		Handler:    SimpleHandlerFn(moderation.Mute),
+		Handler:    moderation.Mute,
 	},
 	{
 		Definition: moderation.DefineUnmute,
-		Handler:    SimpleHandlerFn(moderation.Unmute),
+		Handler:    moderation.Unmute,
 	},
 }
