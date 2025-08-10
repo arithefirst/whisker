@@ -73,7 +73,9 @@ Whisker is a versatile Discord bot designed to enhance your server experience wi
 
 For the following, this assumes the name of your command is `examplecommand`
 
-- The command definition must be at the top of the file, and be formatted as
+- The command definition must be at the top of the file, and be formatted as:
+  File `examplecommand.go`
+
   ```go
     var DefineExamplecommnd = &discordgo.ApplicationCommand{
     Name:        "examplecommand",
@@ -82,10 +84,12 @@ For the following, this assumes the name of your command is `examplecommand`
       // put command options here
     },
   }
-  ```
 
-- The command implementation must be below the definition, and be formatted as
-  ```go
+  // The command implementation must be below the definition, and be formatted as
+
+  // or func Ping(s *discrodgo.Session, i *discordgo.InteractionCreate, db *pgxpool.Pool)
+  // if it requires a database connection
+
   func Ping(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
     // Command Logic & Option parsing goes here
@@ -99,6 +103,17 @@ For the following, this assumes the name of your command is `examplecommand`
     })
   }
   ```
-  
 
 - Every time a command is added, you must add it's definition and impl to [definitions.go](/commands/definitions.go).
+  For example:
+
+  ```go
+  var commandRegistry = []Command{
+    // other definitions
+    {
+      Definition: DefineExamplecommnd,
+      Handler:    SimpleHandlerFn(Ping), // or DBAwareHandlerFn(Ping)
+    }
+    // ...
+  }
+  ```
