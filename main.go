@@ -33,8 +33,12 @@ func main() {
 
 	dbpool, err := pgxpool.New(context.Background(), databaseUrl)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to create connection pool: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("Unable to create connection pool: %v\n", err)
+	}
+
+	// ping the db to verify alive connection
+	if err := dbpool.Ping(context.Background()); err != nil {
+		log.Fatalf("Unable to connect to database: %v\n", err)
 	}
 
 	log.Println("Connected to databse")
@@ -42,12 +46,12 @@ func main() {
 	defer dbpool.Close()
 
 	// dependency injection
-	eventHandler := &events.Handler {
+	eventHandler := &events.Handler{
 		DB: dbpool,
 	}
 
-	cmdHandler := &commands.Handler {
-        DB: dbpool,
+	cmdHandler := &commands.Handler{
+		DB: dbpool,
 	}
 
 	GuildID := "1402745840220635187"
