@@ -16,7 +16,7 @@ Whisker is a versatile Discord bot designed to enhance your server experience wi
 #### Moderation
 - [x] **Kick** - Kick users from server
 - [x] **Ban** - Ban users from server
-- [ ] **Mute** - Mute users in channels
+- [x] **Mute** - Mute users in channels
 - [x] **Warn** - Warn users
 - [ ] **Warn Log** - View user warnings
 - [ ] **Snipe** - Show last deleted message
@@ -36,6 +36,11 @@ Whisker is a versatile Discord bot designed to enhance your server experience wi
 - [X] **Banner** - Get user banners
 - [ ] **Image Processing** - Rotate, crop, zoom, flip images
 - [ ] **Meme Generator** - Create memes with captions and templates
+- [ ] **Tags system**
+    - /tag create <name> <content>
+    - /tag delete <name>
+    - /tag <name>
+    - Restrict create/delete to users with Level-Up role
 
 ### 🎉 Fun Commands
 
@@ -112,7 +117,7 @@ For the following, this assumes the name of your command is `examplecommand`
     // other definitions
     {
       Definition: DefineExamplecommnd,
-      Handler:    SimpleHandlerFn(Ping), // or DBAwareHandlerFn(Ping)
+      Handler:    Ping,
     }
     // ...
   }
